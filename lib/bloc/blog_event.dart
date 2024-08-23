@@ -45,3 +45,5 @@ class SearchBlogs extends BlogEvent {
   @override
   List<Object> get props => [query];
 }
+
+class RefreshBlogs extends BlogEvent {} // New event for refreshing data

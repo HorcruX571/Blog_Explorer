@@ -19,10 +19,9 @@ class DatabaseHelper {
   }
 
   Future<Database> _initDatabase() async {
-    // Initialize your database with a new version to handle schema changes
     final db = await openDatabase(
       'blogs.db',
-      version: 2, // Increment the version number to apply schema changes
+      version: 1,
       onCreate: (Database db, int version) async {
         await db.execute('''
           CREATE TABLE blogs (
@@ -30,16 +29,10 @@ class DatabaseHelper {
             title TEXT,
             imageUrl TEXT,
             category TEXT,
-            content TEXT,  // Added content column
+            content TEXT,
             isFavorite INTEGER
           )
         ''');
-      },
-      onUpgrade: (Database db, int oldVersion, int newVersion) async {
-        if (oldVersion < 2) {
-          // Handle schema migration if the old version is less than 2
-          await db.execute('ALTER TABLE blogs ADD COLUMN content TEXT');
-        }
       },
     );
     return db;
@@ -63,7 +56,7 @@ class DatabaseHelper {
     );
 
     if (maps.isNotEmpty) {
-      return Blog.fromMap(maps.first);
+      return Blog.fromJson(maps.first);
     } else {
       return null;
     }

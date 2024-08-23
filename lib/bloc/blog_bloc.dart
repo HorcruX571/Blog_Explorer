@@ -61,5 +61,15 @@ class BlogBloc extends Bloc<BlogEvent, BlogState> {
         emit(BlogLoaded(searchedBlogs));
       }
     });
+
+    on<RefreshBlogs>((event, emit) async {
+      emit(BlogLoading());
+      try {
+        allBlogs = await blogRepository.fetchBlogs(); // Re-fetch the data
+        emit(BlogLoaded(allBlogs));
+      } catch (e) {
+        emit(BlogError(e.toString()));
+      }
+    });
   }
 }

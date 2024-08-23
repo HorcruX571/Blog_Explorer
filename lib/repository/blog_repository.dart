@@ -17,6 +17,9 @@ class BlogRepository {
         headers: {'x-hasura-admin-secret': adminSecret},
       );
 
+      print('Response status: ${response.statusCode}');
+      print('Response body: ${response.body}');
+
       if (response.statusCode == 200) {
         final jsonData = json.decode(response.body);
         final List<dynamic> blogsJson = jsonData['blogs'];
@@ -37,6 +40,7 @@ class BlogRepository {
         throw Exception('Failed to load blogs');
       }
     } catch (e) {
+      print('Failed to load blogs: $e');
       final List<Blog> cachedBlogs = await databaseHelper.fetchBlogs();
       if (cachedBlogs.isNotEmpty) {
         return cachedBlogs;

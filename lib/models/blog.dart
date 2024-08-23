@@ -3,7 +3,7 @@ class Blog {
   final String title;
   final String imageUrl;
   final String category;
-  final String content; // New content field
+  final String content;
   final bool isFavorite;
 
   Blog({
@@ -32,7 +32,7 @@ class Blog {
       title: json['title'],
       imageUrl: json['image_url'] ?? '',
       category: category,
-      content: json['content'] ?? 'No content available', // Handle content
+      content: json['content'] ?? 'No content available',
     );
   }
 
@@ -42,7 +42,7 @@ class Blog {
       'title': title,
       'imageUrl': imageUrl,
       'category': category,
-      'content': content, // Add content to the map
+      'content': content,
       'isFavorite': isFavorite ? 1 : 0,
     };
   }
@@ -53,7 +53,7 @@ class Blog {
       title: map['title'],
       imageUrl: map['imageUrl'],
       category: map['category'],
-      content: map['content'], // Retrieve content from the map
+      content: map['content'],
       isFavorite: map['isFavorite'] == 1,
     );
   }
@@ -63,7 +63,7 @@ class Blog {
     String? title,
     String? imageUrl,
     String? category,
-    String? content, // Handle content in copyWith
+    String? content,
     bool? isFavorite,
   }) {
     return Blog(

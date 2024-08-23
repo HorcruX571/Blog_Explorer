@@ -30,16 +30,22 @@ class BlogDetailScreen extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               blog.imageUrl.isNotEmpty
-                  ? Image.network(
-                      blog.imageUrl,
-                      width: double.infinity,
-                      height: 200.0,
-                      fit: BoxFit.cover,
+                  ? ClipRRect(
+                      borderRadius: BorderRadius.circular(10.0),
+                      child: Image.network(
+                        blog.imageUrl,
+                        width: double.infinity,
+                        height: 200.0,
+                        fit: BoxFit.cover,
+                      ),
                     )
                   : Container(
                       width: double.infinity,
                       height: 200.0,
-                      color: Colors.grey[300],
+                      decoration: BoxDecoration(
+                        color: Colors.grey[300],
+                        borderRadius: BorderRadius.circular(10.0),
+                      ),
                       child: Icon(
                         Icons.image,
                         color: Colors.grey[700],
@@ -65,7 +71,29 @@ class BlogDetailScreen extends StatelessWidget {
                 ),
                 child: Text(
                   blog.content,
-                  style: TextStyle(fontSize: 16),
+                  style: TextStyle(
+                    fontSize: 16.0,
+                    height: 1.5,
+                  ),
+                ),
+              ),
+              SizedBox(height: 20),
+              Center(
+                child: ElevatedButton(
+                  onPressed: () {
+                    // Add any action you want to perform on button press
+                  },
+                  style: ElevatedButton.styleFrom(
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 32.0, vertical: 12.0),
+                    shape: RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10.0),
+                    ),
+                  ),
+                  child: Text(
+                    'Share this Blog',
+                    style: TextStyle(fontSize: 16.0),
+                  ),
                 ),
               ),
             ],

@@ -1,11 +1,10 @@
-import 'package:blog_explorer/models/blog.dart';
+import 'package:blog_explorer/bloc/blog_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import '../bloc/blog_bloc.dart';
 import '../bloc/blog_event.dart';
-import '../bloc/blog_state.dart';
 import '../cubit/theme_cubit.dart';
+import '../models/blog.dart';
 import '../widgets/blog_card.dart';
 import 'blog_detail_screen.dart';
 import 'search_screen.dart';
@@ -98,6 +97,16 @@ class BlogListScreen extends StatelessWidget {
                 },
               ),
             ),
+            Divider(), // Adds a line between items
+            ListTile(
+              leading: Icon(Icons.refresh),
+              title: Text('Refresh Data'),
+              onTap: () {
+                // Trigger a refresh of the data
+                context.read<BlogBloc>().add(RefreshBlogs());
+                Navigator.pop(context); // Close the drawer after tapping
+              },
+            ),
           ],
         ),
       ),
@@ -138,45 +147,30 @@ class BlogListScreen extends StatelessWidget {
                         child: Text('No blogs available for this category.'));
                   }
 
-                  // Filtering out "Privacy Policy" from the blog list
                   final filteredBlogs = state.blogs.where((blog) {
                     return blog.title.toLowerCase() != 'privacy policy';
                   }).toList();
 
-                  // Applying staggered animations
-                  return AnimationLimiter(
-                    child: ListView.builder(
-                      itemCount: filteredBlogs.length,
-                      itemBuilder: (context, index) {
-                        final blog = filteredBlogs[index];
-                        return AnimationConfiguration.staggeredList(
-                          position: index,
-                          duration: const Duration(milliseconds: 375),
-                          child: SlideAnimation(
-                            verticalOffset: 50.0,
-                            child: FadeInAnimation(
-                              child: BlogCard(
-                                blog: blog,
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                      builder: (context) =>
-                                          BlogDetailScreen(blog: blog),
-                                    ),
-                                  );
-                                },
-                                onFavoriteTap: () {
-                                  context
-                                      .read<BlogBloc>()
-                                      .add(FavoriteBlog(blog));
-                                },
-                              ),
+                  return ListView.builder(
+                    itemCount: filteredBlogs.length,
+                    itemBuilder: (context, index) {
+                      final blog = filteredBlogs[index];
+                      return BlogCard(
+                        blog: blog,
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) =>
+                                  BlogDetailScreen(blog: blog),
                             ),
-                          ),
-                        );
-                      },
-                    ),
+                          );
+                        },
+                        onFavoriteTap: () {
+                          context.read<BlogBloc>().add(FavoriteBlog(blog));
+                        },
+                      );
+                    },
                   );
                 }
                 return Center(child: Text('No blogs available.'));

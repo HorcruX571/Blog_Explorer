@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'bloc/blog_bloc.dart';
 import 'bloc/blog_event.dart';
-import 'cubit/theme_cubit.dart'; // Import the ThemeCubit
+import 'cubit/theme_cubit.dart';
 import 'repository/blog_repository.dart';
 import 'screens/blog_list_screen.dart';
 
